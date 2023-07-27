@@ -1,0 +1,89 @@
+<script>
+component.setModel({
+    field: component.find("message-field"),
+    sharedPoint: component.inputData,
+    count: 0,
+    name: "User",
+    message: "...",
+    color: "red",
+
+    sendMessageCommand: function() {
+        if(this.name.value.length > 0 && this.message.value.length > 0) {
+            this.sharedPoint.value.share({
+                sender: this.name.value,
+                message: this.message.value
+            });
+
+            this.count.value++;
+            this.message.value = "";
+            this.field.value.focus();
+        }
+    },
+
+    clearMessageCommand: function() {
+        this.message.value = "";
+    },
+
+    magicCommand: function(eventInfo) {
+        this.color.value = "#";
+        const letters = '0123456789ABCDEF';
+        for (var index = 0; index < 6; index++) {
+            this.color.value += letters[Math.floor(Math.random() * 16)];
+        }
+    }
+}, 'message-form');
+</script>
+
+<div class="component" template="message-form">
+    <span>Messages sent: {{count}} by <b>{{name}}</b></span>
+    <div class="box">
+        <strong>Name: </strong>
+        <input placeholder="Your name.." value="{{name}}" bind="{{name}}"
+            bindEvent="input" title="User = {{name}}" name="name-field">
+    </div>
+    <div class="box">
+        <strong>Message: </strong>
+        <input placeholder="Any text.." value="{{message}}" bind="{{message}}"
+            title="Message = {{message}}" name="message-field">
+    </div>
+    <button class="btn btn-dark" name="sendButton" command="{{sendMessageCommand}}" name="message-button">Send message</button>
+    <button class="btn btn-secondary" name="clearButton" command="{{clearMessageCommand}}" name="clear-button">Clear message</button>
+
+    <div class="magic" style="background-color: {{color}};"
+        command="{{magicCommand}}" commandEvent="mouseover"></div>
+</div>
+
+<style>
+.component {
+    border: 1px solid #000;
+    padding: 20px;
+    font-size: 18px;
+    width: 500px;
+}
+
+.component * {
+    margin-top: 10px;
+}
+
+.box strong {
+    display: inline-block;
+    width: 100px;
+}
+
+.box input {
+    border: none;
+    width: 230px;
+}
+
+.component button {
+    width: 100%;
+}
+
+.component .magic {
+    margin: 20px;
+    border: #000 solid 3px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+</style>

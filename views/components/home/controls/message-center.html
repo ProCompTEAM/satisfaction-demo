@@ -1,0 +1,43 @@
+<script>
+const model = {
+    sharedPoint: sf_point_set(),
+
+    construct: function() {
+        component.find("message-form")
+            .load(true, this.sharedPoint.value);
+        component.find("message-list")
+            .load(true, this.sharedPoint.value);
+
+        console.log(`Message center initialized.`);
+    }
+};
+
+component.setModel(model, "message-center");
+</script>
+
+<div class="component" template="message-center">
+    <span class="title">Welcome to message center:</span>
+    <div class="message-form">
+        <component src="/views/components/home/controls/message-form.html" name="message-form"></component>
+    </div>
+    <div class="message-list">
+        <component src="/views/components/home/controls/message-list.html" name="message-list"></component>
+    </div>
+</div>
+
+<style>
+.component {
+    margin: 10px;
+}
+
+.title {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.message-form, .message-list {
+    margin-top: 30px;
+}
+</style>

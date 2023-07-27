@@ -1,0 +1,32 @@
+<div class="component">
+    <input class="input">
+</div>
+
+<script>
+    const input = component.querySelectorAll('input')[0];
+    input.value = "Component B";
+
+    input.onfocus = function() {
+        input.value = "";
+    };
+
+    let seconds = 0;
+    setInterval(
+        function() { 
+            if(seconds < 30) {
+                input.value = fib(seconds);
+            }
+            seconds++; 
+        }, 1000);
+
+    function fib(n) {
+        return n <= 1 ? n : fib(n - 1) + fib(n - 2);
+    }
+</script>
+
+<style>
+    .input {
+        background-color: skyblue;
+        color: black;
+    }
+</style>

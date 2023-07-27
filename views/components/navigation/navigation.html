@@ -1,0 +1,130 @@
+<div class="component sticky-top top-navigation row">
+    <div class="col-auto d-flex">
+        <div class="top-navigation-main-button" navigation-component-name="home"></div>
+        <div class="top-navigation-surface text-nowrap d-none d-xl-block">
+            <a class="top-navigation-link-important" href="/next-page">🙀Cat</a>
+            <a class="top-navigation-link" href="/">Home</a>
+            <a class="top-navigation-link" href="/wrong-page-url">Wrong</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="float-end text-nowrap top-navigation-toolbar">
+            <a class="top-navigation-short-button plus-icon float-end" title="Add playlist" navigation-component-name="add" data-toggle="tooltip"></a>
+            <a class="top-navigation-short-button settings-icon float-end" title="Settings" navigation-component-name="settings" data-toggle="tooltip"></a>
+            <a class="d-block d-xl-none top-navigation-short-button profile-icon float-end" title="Counter" navigation-component-name="counter" data-toggle="tooltip"></a>
+            <a class="d-none d-xl-block top-navigation-button profile-icon float-end" navigation-component-name="counter">Counter</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    //TODO anything
+</script>
+
+<style>
+.top-navigation {
+    background-color: #fff;
+    padding-top: 30px;
+    padding-bottom: 24px;
+    padding-left: 30px;
+    padding-right: 20px;
+    border-bottom: 1px solid #f3f3f3;
+}
+
+.top-navigation-main-button {
+    display: inline-block;
+    transition-duration: 0.75s;
+    transition-delay: 0.2s;
+    background-image: url('/resources/images/demo-logo.png');
+    background-size: 260px 60px;
+    opacity: 0.85;
+    width: 260px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.top-navigation-main-button:hover {
+    opacity: 0.9;
+}
+
+.top-navigation-surface {
+    display: inline-block;
+    margin-left: 50px;
+    width: 220px;
+}
+
+.top-navigation-link,
+.top-navigation-link-important {
+    display: inline-block;
+    color: #424242;
+    transition-duration: 0.5s;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 60px;
+    line-height: 60px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.top-navigation-link-important {
+    color: #8B0000;
+}
+
+.top-navigation-link:hover {
+    color: #000;
+}
+
+.top-navigation-toolbar {
+    width: 510px;
+}
+
+.top-navigation-button {
+    padding-left: 26px;
+    height: 50px;
+    line-height: 48px;
+    margin: 5px 8px 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 140px;
+    text-decoration: none !important;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1F1F1F;
+    background-size: 24px 24px;
+    background-position: 12px 12px;
+    background-repeat: no-repeat;
+    transition-duration: 0.25s;
+}
+
+.top-navigation-button:hover {
+    border: 1px solid #555;
+    color: #000;
+}
+
+.top-navigation-short-button {
+    padding-left: 26px;
+    height: 50px;
+    margin: 5px 8px 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 50px;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 600;
+    background-size: 24px 24px;
+    background-position: 12px 12px;
+    background-repeat: no-repeat;
+    transition-duration: 0.5s;
+}
+
+.top-navigation-short-button:hover {
+    border: 1px solid #333;
+}
+</style>

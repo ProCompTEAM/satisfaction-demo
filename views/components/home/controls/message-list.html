@@ -1,0 +1,64 @@
+<script>
+const messageList = {
+    sharedPoint: component.inputData,
+    messages: [],
+    messagesCount: 0,
+    messagesRemovedCount: 0,
+
+    construct: function() {
+        this.sharedPoint.value.subscribe(this, this.registerMessage);
+    },
+    registerMessage: function(messageModel) {
+        messageModel.close = function() {
+            messageModel.unset();
+            messageList.messagesRemovedCount.value++;
+        }
+
+        this.messages.value.push(messageModel);
+        this.messagesCount.value++;
+    }
+};
+
+component.setModel(messageList, 'message-list');
+component.setMultiplier(messageList.messages.value, 'message');
+</script>
+
+<div class="component" template="message-list">
+    <span>
+        Messages got: <strong>{{messagesCount}}</strong>, 
+        removed: <strong>{{messagesRemovedCount}}</strong>
+    </span>
+    <div class="message" template="message">
+        <button class="close-button" command="{{close}}">x</button>
+        <span class="message-sender" title="{{sender}}">{{sender}}</span>
+        <span class="message-text" title="{{message}}">{{message}}</span>
+    </div>
+</div>
+
+<style>
+.component {
+    margin-top: 10px;
+}
+
+.close-button {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    float: right;
+    font-size: 8px;
+}
+
+.message {
+    margin-top: 10px;
+    max-width: 500px;
+    padding: 20px;
+    height: auto;
+    font-size: 16px;
+    background-color: rgb(187, 159, 187);
+}
+
+.message-sender {
+    display: block;
+    text-decoration: underline;
+}
+</style>

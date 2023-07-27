@@ -1,0 +1,41 @@
+.profile-icon {
+    background-image: url('/resources/icons/svg/profile.svg');
+}
+
+.settings-icon {
+    background-image: url('/resources/icons/svg/settings.svg');
+}
+
+.plus-icon {
+    background-image: url('/resources/icons/svg/plus.svg');
+}
+
+html body {
+    background-color: #fafafa;
+}
+
+body {
+    padding: 0 10px;
+}
+
+button {
+    font-size: 18px;
+    background-color: lavender;
+}
+
+.container-fluid {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    padding: 0 35px;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.container {
+    background-color: #fff;
+}

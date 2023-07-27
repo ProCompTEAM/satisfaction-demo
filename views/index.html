@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="Content-Type" content="text/html;">
+        <meta charset = "utf-8">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <link href="/resources/styles/main.css" rel="stylesheet" type="text/css">
+
+        <title>Satisfaction.JS - Demo</title>
+        
+        <script type="text/javascript" src="/satisfaction.dev.js"></script>
+
+        <route path="/" navigation-component-name="home"></route>
+        <route path="/home" navigation-component-name="home"></route>
+        <route path="/add" navigation-component-name="add"></route>
+        <route path="/counter" navigation-component-name="counter"></route>
+        <route path="/settings" navigation-component-name="settings"></route>
+        <route path="/default" navigation-component-name="default" default></route>
+    </head>
+    <body onload="sf_initialize()" allow-routing>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+        <script>
+            //bootstrap code, ignore it
+            document.addEventListener("DOMContentLoaded", function(){
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function(element){
+                    return new bootstrap.Tooltip(element, { placement : "bottom" });
+                });
+            });
+        </script>
+
+        <script>
+            const minimalFullPresentationWidth = 1020;
+            var setContentPresentation = function() {
+                var container = document.getElementById("content-container");
+                if(window.innerWidth > minimalFullPresentationWidth) {
+                    container.setAttribute("class", "container");
+                } else {
+                    container.setAttribute("class", "container-fluid");
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", setContentPresentation);
+            window.onresize = setContentPresentation;
+        </script>
+
+        <script>
+            sf_component_loading_indicator = "<center><div class=\"spinner-grow\" role=\"status\"></div></center>";
+        </script>
+
+        <div id="content-container" class="container">
+            <component src="/views/components/navigation/navigation.html" name="navigation" default></component>
+            <div class="content" navigation-switch>
+                <component src="/views/components/default/default.html" name="default"></component>
+                <component src="/views/components/home/home.html" name="home"></component>
+                <component src="/views/components/add/add.html" name="add"></component>
+                <component src="/views/components/counter/counter.html" name="counter"></component>
+                <component src="/views/components/settings/settings.html" name="settings"></component>
+            </div>
+        </div>
+    </body>
+</html>
