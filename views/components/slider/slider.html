@@ -1,0 +1,82 @@
+<script>
+const model = {
+    imageSource: "",
+    imageNames: [
+        "image1.jpg",
+        "image2.jpg",
+        "image3.jpg",
+        "image4.jpg",
+        "image5.jpg",
+    ],
+    imageIndex: 0,
+
+    construct: function() {
+        this.imageSource.value = this.getImageSource();
+    },
+    backCommand: function() {
+        if(this.imageIndex.value > 0) {
+            this.imageIndex.value--;
+        } else {
+            this.imageIndex.value = this.imageNames.value.length - 1;
+        }
+        this.imageSource.value = this.getImageSource();
+    },
+    nextCommand: function() {
+        if(this.imageIndex.value < this.imageNames.value.length - 1) {
+            this.imageIndex.value++;
+        } else {
+            this.imageIndex.value = 0;
+        }
+        this.imageSource.value = this.getImageSource();
+    },
+    getImageSource: function() {
+        return `/resources/images/slider/${this.imageNames.value[this.imageIndex.value]}`;
+    },
+}
+
+component.setModel(model, "slider");
+</script>
+
+<div class="component" template="slider">
+    <div class="slider">
+        <img src="{{imageSource}}">
+    </div>
+    <div class="switcher">
+        <div class="switcher-button" command="{{backCommand}}"></div>
+        <div class="switcher-button" command="{{nextCommand}}"></div>
+    </div>
+</div>
+
+<style>
+    .component {
+        margin-top: 40px;
+        width: 550px;
+        height: auto;
+        padding: 25px;
+    }
+
+    .slider img {
+        width: 350px;
+        height: 350px;
+    }
+
+    .switcher {
+        margin-left: 145px;
+        padding: 10px;
+        width: 100px;
+    }
+
+    .switcher > .switcher-button {
+        transition-duration: 0.65s;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 20px;
+        background-color: mediumslateblue;
+    }
+
+    .switcher > .switcher-button:hover {
+        background-color: rebeccapurple;
+        cursor: pointer;
+    }
+</style>

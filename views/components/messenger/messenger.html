@@ -1,0 +1,41 @@
+<script>
+    console.log("Home page opened");
+
+    //simplified approach
+    const button = component.find("open-form-button");
+    button.onclick = function() {
+        const center = component.find("message-center");
+        if(center.hasLoaded()) {
+            center.unload();
+        } else {
+            center.load();
+        }
+    }
+</script>
+
+<div class="component">
+    <button class="btn btn-success" name="open-form-button">Show/Unset message center</button>
+    
+    <div class="message-center">
+        <component src="/views/components/messenger/controls/message-center.html" name="message-center"></component>
+    </div>
+</div>
+
+<style>
+    .component {
+        margin: 50px;
+    }
+
+    .component input {
+        padding: 20px;
+        margin: 5px;
+        font-size: 18px;
+        border: 1px solid #fff;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .component input:hover {
+        border: 1px solid #000;
+    }
+</style>
