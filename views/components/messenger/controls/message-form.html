@@ -3,8 +3,8 @@ component.setModel({
     field: component.find("message-field"),
     sharedPoint: component.inputData,
     count: 0,
-    name: "User",
-    message: "...",
+    name: sf_state_get("userName"),
+    message: "Hello World!",
     color: "red",
 
     sendMessageCommand: function() {
@@ -13,6 +13,8 @@ component.setModel({
                 sender: this.name.value,
                 message: this.message.value
             });
+
+            sf_state_set("userName", this.name.value, true);
 
             this.count.value++;
             this.message.value = "";

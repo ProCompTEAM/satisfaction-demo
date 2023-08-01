@@ -1,38 +1,78 @@
 <script>
 const messageList = {
     sharedPoint: component.inputData,
-    messages: [],
-    messagesCount: 0,
-    messagesRemovedCount: 0,
+    storedMessages: JSON.parse(component.state('storedMessages') ?? "[]"),
+    displayedMessages: [], 
+    messagesCount: component.state('messagesCount') ?? 0,
+    messagesClosedCount: 0,
+    storeMessagesIntervalMs: 2000,
 
     construct: function() {
+        if(this.storedMessages.value.length > 0) {
+            this.storedMessages.value.forEach(function(storedMessage) {
+                const messageModel = this.makeMessageModel(storedMessage);
+                this.displayedMessages.value.push(messageModel);
+            }.bind(this));
+        };
+
+        setInterval(this.storeMessages.bind(this), this.storeMessagesIntervalMs.value);
+        
         this.sharedPoint.value.subscribe(this, this.registerMessage);
     },
-    registerMessage: function(messageModel) {
+    registerMessage: function(message) {
+        const messageModel = this.makeMessageModel(message);
+        this.displayedMessages.value.push(messageModel);
+        this.storedMessages.value.push(message);
+        this.messagesCount.value++;
+    },
+    storeMessages: function() {
+        component.setState(
+            'storedMessages',
+            JSON.stringify(this.storedMessages.value),
+            true);
+
+        component.setState(
+            'messagesCount',
+            this.messagesCount.value,
+            true);
+    },
+    makeMessageModel: function(message) {
+        const messageModel = { ...message };
         messageModel.close = function() {
             messageModel.unset();
-            messageList.messagesRemovedCount.value++;
-        }
+            messageList.messagesClosedCount.value++;
+        };
 
-        this.messages.value.push(messageModel);
-        this.messagesCount.value++;
+        return messageModel;
+    },
+    clearCommand: function() {
+        this.storedMessages.value.splice(0, this.storedMessages.value.length);
+
+        this.displayedMessages.value.splice(0, this.displayedMessages.value.length);
+        this.displayedMessages.value.synchronize();
+
+        this.messagesCount.value = 0;
+        this.messagesClosedCount.value = 0;
     }
 };
 
 component.setModel(messageList, 'message-list');
-component.setMultiplier(messageList.messages.value, 'message');
+component.setMultiplier(messageList.displayedMessages.value, 'message');
 </script>
 
 <div class="component" template="message-list">
     <span>
         Messages got: <strong>{{messagesCount}}</strong>, 
-        removed: <strong>{{messagesRemovedCount}}</strong>
+        closed: <strong>{{messagesClosedCount}}</strong>
     </span>
-    <div class="message" template="message">
-        <button class="close-button" command="{{close}}">x</button>
-        <span class="message-sender" title="{{sender}}">{{sender}}</span>
-        <span class="message-text" title="{{message}}">{{message}}</span>
+    <div class="messages">
+        <div class="message" template="message">
+            <button class="close-button" command="{{close}}">x</button>
+            <span class="message-sender" title="{{sender}}">{{sender}}</span>
+            <span class="message-text" title="{{message}}">{{message}}</span>
+        </div>
     </div>
+    <a class="clear-link" command="{{clearCommand}}">Clear all list</a>
 </div>
 
 <style>
@@ -46,6 +86,13 @@ component.setMultiplier(messageList.messages.value, 'message');
     height: 20px;
     float: right;
     font-size: 8px;
+}
+
+.clear-link {
+    color: blue;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .message {

@@ -1,8 +1,20 @@
 <span class="title">Home page with slider</span>
 
-<component src="/views/components/slider/slider.html" name="slider" default></component>
+<div class="slider-board">
+    <component src="/views/components/slider/slider.html" name="slider1" class="slider" variation="bird" default></component>
+    <component src="/views/components/slider/slider.html" name="slider2" class="slider" variation="nature" default></component>
+</div>
 
 <style>
+    .slider-board {
+        display: block;
+    }
+
+    .slider {
+        display: inline-block;
+        padding: 10px;
+    }
+
     .title {
         display: inline-block;
         padding: 20px;

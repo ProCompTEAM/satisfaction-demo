@@ -13,7 +13,7 @@
 
         <title>Satisfaction.JS - Demo</title>
         
-        <script type="text/javascript" src="/satisfaction.dev.js?30-07-2023-16-00"></script>
+        <script type="text/javascript" src="/satisfaction.dev.js?01-08-2023-00-02"></script>
 
         <route path="/" navigation-component-name="home"></route>
         <route path="/home" navigation-component-name="home"></route>
@@ -53,6 +53,10 @@
 
         <script>
             sf_component_loading_indicator = "<center><div class=\"spinner-grow\" role=\"status\"></div></center>";
+
+            if(!sf_state_get("userName")) {
+                sf_state_set("userName", "Steve", true);
+            }
         </script>
 
         <div id="content-container" class="container">

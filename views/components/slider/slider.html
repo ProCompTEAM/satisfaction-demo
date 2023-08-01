@@ -1,8 +1,9 @@
 <script>
 const model = {
+    folder: component.attributes["variation"].value,
     imageSource: "",
     imageNames: [
-        "image1.jpg",
+        "imageD.jpg",
         "image2.jpg",
         "image3.jpg",
         "image4.jpg",
@@ -30,7 +31,7 @@ const model = {
         this.imageSource.value = this.getImageSource();
     },
     getImageSource: function() {
-        return `/resources/images/slider/${this.imageNames.value[this.imageIndex.value]}`;
+        return `/resources/images/slider/${this.folder.value}/${this.imageNames.value[this.imageIndex.value]}`;
     },
 }
 
@@ -50,9 +51,8 @@ component.setModel(model, "slider");
 <style>
     .component {
         margin-top: 40px;
-        width: 550px;
+        width: 400px;
         height: auto;
-        padding: 25px;
     }
 
     .slider img {

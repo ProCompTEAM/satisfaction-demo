@@ -7,7 +7,7 @@
     DEPARTMENT -> GENERAL CONSTANTS
 */
 
-const SF_PUBLIC_VERSION = "1.0.1";
+const SF_PUBLIC_VERSION = "1.0.1"; //add anonymous component(unnamed, by path), add sf_component_create+component.create
 
 /*
     DEPARTMENT -> COMMON VARIABLES
@@ -22,9 +22,11 @@ var sf_component_navigation_name_set = null;
 var sf_routing_allowed = false;
 var sf_routing_path_template = null;
 
-var sf_model_multiplier_allow_default_functions = true;
+var sf_model_multiplier_default_functions_allowed = true;
 
-var sf_point_shared = new Object();
+var sf_point_shared_objects = new Object();
+
+var sf_states = new Object();
 
 /*
     DEPARTMENT -> FRAMEWORK DEFAULTS
@@ -194,6 +196,16 @@ function sf_component_set_defaults(componentElement) {
         sf_component_navigate(componentElement.name);
     }
 
+    componentElement.state = function(name) {
+        const componentNameKey = `component.${componentElement.name}.${name}`;
+        return sf_state_get(componentNameKey);
+    }
+
+    componentElement.setState = function(name, value = null, setLocalStorage = false) {
+        const componentNameKey = `component.${componentElement.name}.${name}`;
+        sf_state_set(componentNameKey, value, setLocalStorage);
+    }
+
     componentElement.setModel = function(model, templateName) {
         componentElement.querySelectorAll(`[template="${templateName}"]`).forEach(
             function(element) {
@@ -287,8 +299,8 @@ function sf_component_execute_js(targetElement) {
     );
 
     function sf_component_get_js_reservation() {
-        const component_reserved_variable_name = "component";
-        return `let ${component_reserved_variable_name} = ${sf_component_current.name}();\n\r`;
+        const component_reserved_const_name = "component";
+        return `const ${component_reserved_const_name} = ${sf_component_current.name}();\n\r`;
     }
 }
 
@@ -603,7 +615,7 @@ function sf_model_set_multiplier(templateElement, targetArray, display = 'block'
         const newElement = sf_model_set_multiplier_template_clone(templateElement, arrayIndex, display);
         sf_model_set_multiplier_model(newElement, model);
 
-        if(sf_model_multiplier_allow_default_functions) {
+        if(sf_model_multiplier_default_functions_allowed) {
             sf_model_set_multiplier_default_functions(model, arrayIndex);
         }
     }
@@ -670,7 +682,7 @@ function sf_model_set_multiplier_template_clone(templateElement, index, display)
  * @return {void}
  */
 function sf_model_set_multiplier_reset(targetElement) {
-    targetElement.querySelectorAll(`[sf-template-index]`).forEach(element => {
+    targetElement.parentNode.querySelectorAll(`[sf-template-index]`).forEach(element => {
         element.remove();
     });
 }
@@ -681,12 +693,12 @@ function sf_model_set_multiplier_reset(targetElement) {
 */
 
 /**
- * Retrieves a shared point object by its name from sf_point_shared variable.
+ * Retrieves a shared point object by its name from sf_point_shared_objects variable.
  * @param {string} name - The name of the shared point to retrieve.
  * @returns {Object} The shared point object with subscribe, unsubscribe, and share methods.
  */
 function sf_point_get(name) {
-    return sf_point_shared[name];
+    return sf_point_shared_objects[name];
 }
 
 /**
@@ -711,10 +723,49 @@ function sf_point_set(name = null) {
     };
 
     if(name) {
-        sf_point_shared[name] = point;
+        sf_point_shared_objects[name] = point;
     }
 
     return point;
+}
+
+
+/*
+    DEPARTMENT -> STATE MANAGER
+*/
+
+/**
+ * Gets the value of a state by name.
+ * @param {string} name - The name of the state to get.
+ * @return {*} The value of the state from localStorage if it exists, otherwise from states.
+ */
+function sf_state_get(name) {
+    return localStorage.getItem(`sf_${name}`) ?? sf_states[name];
+}
+
+/**
+ * Sets the value of a state by name.
+ * @param {string} name - The name of the state to set.
+ * @param {*} value - The value to set for the state.
+ * @param {boolean} [setLocalStorage=false] - Whether to set the value in localStorage as well.
+ * @return {void}
+ */
+function sf_state_set(name, value, setLocalStorage = false) {
+    sf_states[name] = value;
+
+    if(setLocalStorage) {
+        localStorage.setItem(`sf_${name}`, value);
+    }
+}
+
+/**
+ * Unsets a state by name.
+ * @param {string} name - The name of the state to unset.
+ * @return {void}
+ */
+function sf_state_unset(name) {
+    delete sf_states[name];
+    localStorage.removeItem(`sf_${name}`);
 }
 
 

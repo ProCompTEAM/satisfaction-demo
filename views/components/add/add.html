@@ -1,9 +1,13 @@
-<div class="component">
-    <b>Add smth new for this...</b>
+<div class="component" template="component-add">
+    <b>Add smth new for this, {{name}}.</b>
 </div>
 
 <script>
-    
+    const model = {
+        name: sf_state_get("userName"),
+    };
+
+    component.setModel(model, "component-add");
 </script>
 
 <style>
