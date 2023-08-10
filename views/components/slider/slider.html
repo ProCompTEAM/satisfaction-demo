@@ -40,7 +40,7 @@ component.setModel(model, "slider");
 
 <div class="component" template="slider">
     <div class="slider">
-        <img src="{{imageSource}}" title="Url: {{imageSource}}" alt="{{imageSource}}">
+        <img class="animated-image" src="{{imageSource}}" title="Url: {{imageSource}}" alt="{{imageSource}}">
     </div>
     <div class="switcher">
         <div class="switcher-button" command="{{backCommand}}"></div>
@@ -80,3 +80,25 @@ component.setModel(model, "slider");
         cursor: pointer;
     }
 </style>
+
+
+<script>
+    //demonstration of view-image animation in component
+
+    const animationDurationMs = 260;
+    const animationMinimalOpacity = 0.75;
+
+    Array.from(component.getElementsByClassName("switcher-button")).forEach(button => {
+        button.addEventListener("click", applyImageAnimation, false);
+    });
+
+    function applyImageAnimation() {
+        var image = component.getElementsByClassName("animated-image")[0];
+        image.style.opacity = animationMinimalOpacity;
+        image.style.transitionDuration = `${animationDurationMs / 2}ms`;
+
+        setTimeout(function() {
+            image.style.opacity = 1;
+        }, animationDurationMs);
+    }
+</script>

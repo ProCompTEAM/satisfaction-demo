@@ -1,19 +1,20 @@
 /*
     Satisfaction - Simple MVVM Javascript Framework for different web apps.
-    Copyright © 2023 Kirill Poroh & Team. Public version. MIT License.
+    Copyright © 2023 Kirill Poroh & Co. Public version. MIT License.
 */
 
 /*
     DEPARTMENT -> GENERAL CONSTANTS
 */
 
-const SF_PUBLIC_VERSION = "1.0.1"; //add anonymous component(unnamed, by path), add sf_component_create+component.create
+const SF_PUBLIC_VERSION = "1.1.0";
 
 /*
     DEPARTMENT -> COMMON VARIABLES
 */
 
 var sf_component_javascript_allowed = true;
+var sf_component_style_add_new_class = true;
 var sf_component_loading_indicator = null;
 var sf_component_templates = new Object();
 var sf_component_last_set = null;
@@ -72,11 +73,31 @@ function sf_component_setup() {
  */
 function sf_component_load_default(targetElement) {
     const components = targetElement.querySelectorAll("component[default]");
+
+    sf_component_claim_anonymous(components);
     
     if(components && components.length > 0) {
         const componentNames = Array.from(components).map(component => component.getAttribute("name"));
         sf_component_load(componentNames);
     }
+}
+
+/**
+ * Claims anonymous components by assigning them a unique name based on their source path and static key.
+ * @param {NodeList} componentElements - A NodeList of component elements to claim as anonymous.
+ * @return {void}
+ */
+function sf_component_claim_anonymous(componentElements) {
+    componentElements.forEach(componentElement => {
+        if(!componentElement.hasAttribute('name')) {
+            const sourcePath = componentElement.getAttribute('src');
+            const fileName = sourcePath.match(/[^\/]+(?=\.)/)[0];
+            const staticKey = sf_hash(sf_xpath_element(componentElement));
+            const newName = `${fileName}-${staticKey}`;
+            componentElement.setAttribute('name', newName);
+            componentElement.setAttribute('anonymous', '');
+        }
+    });
 }
 
 /**
@@ -320,7 +341,11 @@ function sf_component_apply_styles(targetElement) {
 
             if (classMatches) {
                 targetElement.querySelectorAll('[class]').forEach(element => {
-                    element.className = element.className.split(' ').map(name => classMatches.includes(name) ? `${name}-${postfix}` : name).join(' ');
+                    if(sf_component_style_add_new_class) {
+                        element.className = element.className.split(' ').map(name => classMatches.includes(name) ? `${name} ${name}-${postfix}` : name).join(' ');
+                    } else {
+                        element.className = element.className.split(' ').map(name => classMatches.includes(name) ? `${name}-${postfix}` : name).join(' ');
+                    }
                 });
             }
         }
@@ -799,6 +824,40 @@ function sf_sleep(milliseconds) {
  * @param {string} xpathExpression - The XPath expression to evaluate.
  * @returns {XPathResult} An XPathResult object of type ORDERED_NODE_SNAPSHOT_TYPE.
  */
-function sf_xpath(targetElement, xpathExpression) {
+function sf_xpath_find(targetElement, xpathExpression) {
     return document.evaluate(xpathExpression, targetElement, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+}
+
+/**
+ * Generates an XPath expression for a given element.
+ * @param {Element} element - The element for which to generate the XPath expression.
+ * @param {string} xpath - The initial XPath expression (optional).
+ * @returns {string} An XPath expression that uniquely identifies the given element.
+ */
+function sf_xpath_element(element, xpath = '') {
+    while (element && element.nodeType === 1) {
+        let index = 1;
+        for (let sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
+            if (sibling.nodeType !== Node.DOCUMENT_TYPE_NODE && sibling.nodeName === element.nodeName) {
+                ++index;
+            }
+        }
+        xpath = `/${element.nodeName}[${index}]` + xpath;
+        element = element.parentNode;
+    }
+    return xpath;
+}
+
+/**
+ * Calculates a hash code for a text string.
+ * @param {string} text - The text string for which the hash code is calculated.
+ * @returns {string} The hash code as a string in base 36.
+ */
+function sf_hash(text) {
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+        hash = (hash << 5) - hash + text.charCodeAt(i);
+        hash = hash & hash;
+    }
+    return hash.toString(36);
 }
