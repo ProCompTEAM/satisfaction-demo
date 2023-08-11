@@ -69,7 +69,8 @@ component.setMultiplier(messageList.displayedMessages.value, 'message');
         <div class="message" template="message">
             <button class="close-button" command="{{close}}">x</button>
             <span class="message-sender" title="{{sender}}">{{sender}}</span>
-            <span class="message-text" title="{{message}}">{{message}}</span>
+            <span class="message-text" title="{{message}}"
+                style="color: {{color}};">{{message}}</span>
         </div>
     </div>
     <a class="clear-link" command="{{clearCommand}}">Clear all list</a>

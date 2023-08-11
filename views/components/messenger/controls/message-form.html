@@ -5,13 +5,15 @@ component.setModel({
     count: 0,
     name: sf_state_get("userName"),
     message: "Hello World!",
-    color: "red",
+    color: "#000",
+    messageReady: true,
 
     sendMessageCommand: function() {
         if(this.name.value.length > 0 && this.message.value.length > 0) {
             this.sharedPoint.value.share({
                 sender: this.name.value,
-                message: this.message.value
+                message: this.message.value,
+                color: this.color.value
             });
 
             sf_state_set("userName", this.name.value, true);
@@ -51,7 +53,7 @@ component.setModel({
     <button class="btn btn-dark" name="sendButton" command="{{sendMessageCommand}}" name="message-button">Send message</button>
     <button class="btn btn-secondary" name="clearButton" command="{{clearMessageCommand}}" name="clear-button">Clear message</button>
 
-    <div class="magic" style="background-color: {{color}};"
+    <div class="color-picker" style="background-color: {{color}};"
         command="{{magicCommand}}" commandEvent="mouseover"></div>
 </div>
 
@@ -81,7 +83,7 @@ component.setModel({
     width: 100%;
 }
 
-.component .magic {
+.component .color-picker {
     margin: 20px;
     border: #000 solid 3px;
     width: 30px;

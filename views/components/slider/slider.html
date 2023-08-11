@@ -10,6 +10,7 @@ const model = {
         "image5.jpg",
     ],
     imageIndex: 0,
+    labelDisplayed: false,
 
     construct: function() {
         this.imageSource.value = this.getImageSource();
@@ -30,6 +31,9 @@ const model = {
         }
         this.imageSource.value = this.getImageSource();
     },
+    labelCommand: function() {
+        this.labelDisplayed.value = !this.labelDisplayed.value;
+    },
     getImageSource: function() {
         return `/resources/images/slider/${this.folder.value}/${this.imageNames.value[this.imageIndex.value]}`;
     },
@@ -41,9 +45,11 @@ component.setModel(model, "slider");
 <div class="component" template="slider">
     <div class="slider">
         <img class="animated-image" src="{{imageSource}}" title="Url: {{imageSource}}" alt="{{imageSource}}">
+        <span class="label" visible="{{labelDisplayed}}">{{imageSource}}</span>
     </div>
     <div class="switcher">
         <div class="switcher-button" command="{{backCommand}}"></div>
+        <div class="switcher-button" command="{{labelCommand}}"></div>
         <div class="switcher-button" command="{{nextCommand}}"></div>
     </div>
 </div>
@@ -60,8 +66,17 @@ component.setModel(model, "slider");
         height: 350px;
     }
 
+    .slider > .label {
+        display: flex;
+        color: #fff;
+        height: 20px;
+        line-height: 20px;
+        font-size: 12px;
+        margin-top: -20px;
+    }
+
     .switcher {
-        margin-left: 145px;
+        margin-left: 130px;
         padding: 10px;
         width: 100px;
     }
